@@ -1,5 +1,5 @@
-﻿Project Aurora â€” Self-Learning Notification Orchestrator
-VoiceUp / KRITI 2026
+﻿Project Aurora : A  Self-Learning Notification Orchestrator
+VoiceUp
 ================================================================================
 
 Project Aurora is a smart, self-learning notification orchestrator designed to deliver highly personalized user communication. It operates in two continuous phases: Phase 1 creates an initial messaging strategy based on company goals and user behavior, while Phase 2 learns from real-world performance data to autonomously adapt and improve future campaigns.
