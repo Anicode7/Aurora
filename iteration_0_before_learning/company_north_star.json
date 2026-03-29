@@ -1,0 +1,56 @@
+{
+  "company": "SpeakX",
+  "inferred_north_star": {
+    "metric_name": "Monthly Retention",
+    "how_it_was_determined": "explicit_extraction",
+    "definition": "The percentage of trial users who convert to a monthly paid plan AND complete at least one exercise within that month.",
+    "justification": "This is the primary North Star Metric because it directly impacts user engagement and revenue growth. By focusing on Monthly Retention, we can identify areas for improvement in our product and marketing strategies to increase user loyalty and drive business success.",
+    "measurable_proxy": "(trial → monthly converters who complete ≥1 exercise) / (total trial users) × 100"
+  },
+  "supporting_metrics": [
+    {
+      "name": "Trial → Monthly Conversion Rate",
+      "definition": "% of trial users who upgrade within 7 days",
+      "why_it_matters": "This metric helps us understand how effective our onboarding process is at converting trial users to paid subscribers."
+    },
+    {
+      "name": "W1 Retention",
+      "definition": "% of new paid users who complete an exercise in their first week post-conversion",
+      "why_it_matters": "This metric indicates the effectiveness of our retention strategies and identifies areas for improvement in onboarding and support."
+    },
+    {
+      "name": "D30 Streak Rate",
+      "definition": "% of paid users who maintain a streak of ≥5 days in their first month",
+      "why_it_matters": "This metric helps us understand user engagement and motivation, which are critical factors in driving long-term retention and revenue growth."
+    },
+    {
+      "name": "Referral Rate",
+      "definition": "% of paid users who invite at least one friend",
+      "why_it_matters": "This metric indicates the effectiveness of our referral program and provides insights into how we can incentivize users to share SpeakX with their networks."
+    }
+  ],
+  "lifecycle_stages": [
+    {
+      "stage": "trial",
+      "day_range": "D0-D7",
+      "primary_goal": "Convert to monthly paid plan"
+    },
+    {
+      "stage": "paid",
+      "day_range": "D8-D30",
+      "primary_goal": "Build daily practice habit and drive W1 Retention and D30 Streak"
+    },
+    {
+      "stage": "churned",
+      "day_range": "D31+",
+      "primary_goal": "Re-activate with nostalgia and time-limited offer"
+    },
+    {
+      "stage": "inactive",
+      "day_range": "D31+",
+      "primary_goal": "Trigger one micro-action with zero friction"
+    }
+  ],
+  "generated_at": "2026-03-07",
+  "iteration": 0
+}

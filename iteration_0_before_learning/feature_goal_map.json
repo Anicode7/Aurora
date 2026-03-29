@@ -1,0 +1,69 @@
+{
+  "feature_goal_map": [
+    {
+      "feature": "Sia — AI Speaking Partner",
+      "feature_id": "feat_001",
+      "description": "Real-time conversational AI that simulates job interviews, customer calls, daily conversations, and debate practice.",
+      "lifecycle_stage": [
+        "inactive",
+        "paid",
+        "trial"
+      ],
+      "primary_goal": "Build daily practice habit; drive W1 Retention and D30 Streak",
+      "sub_goals": [
+        "validate purchase",
+        "milestones"
+      ],
+      "north_star_contribution": "Increase W1 Retention by 10%",
+      "propensity_levers": [
+        "loss avoidance",
+        "social influence"
+      ],
+      "expected_outcome": "Average user completes ≥4 sessions/week"
+    },
+    {
+      "feature": "Leaderboard",
+      "feature_id": "feat_002",
+      "description": "Displays users' progress and ranking on the app's leaderboard",
+      "lifecycle_stage": [
+        "churned",
+        "inactive",
+        "paid",
+        "trial"
+      ],
+      "primary_goal": "Drive engagement and encourage friendly competition among users",
+      "sub_goals": [
+        "Increase user retention",
+        "Boost motivation through social comparison"
+      ],
+      "north_star_contribution": "Increases Monthly Retention by 10%",
+      "propensity_levers": [
+        "Social Influence",
+        "Loss Avoidance"
+      ],
+      "expected_outcome": "Average engagement time increases by 30 minutes"
+    },
+    {
+      "feature": "Progress Checked",
+      "description": "Users check their progress report to see how they're doing and what improvements they need to make",
+      "lifecycle_stage": [
+        "churned",
+        "paid",
+        "trial"
+      ],
+      "primary_goal": "Re-engage users who are inactive or at risk of churning",
+      "sub_goals": [
+        "Trigger one micro-action with zero friction",
+        "Provide a sense of accomplishment and motivation"
+      ],
+      "north_star_contribution": "Improves Monthly Retention by re-engaging users",
+      "propensity_levers": [
+        "Loss Avoidance",
+        "Unpredictability"
+      ],
+      "expected_outcome": "Increase in user engagement and retention"
+    }
+  ],
+  "generated_at": "2026-03-07",
+  "iteration": 0
+}
