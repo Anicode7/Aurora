@@ -1,0 +1,394 @@
+Project Aurora - Detailed Methodology (Step-by-Step)
+====================================================
+
+Purpose
+-------
+This document explains exactly what method is used at every pipeline step in this repository.
+It is implementation-aligned with the current code in codebase/*.py and the orchestrator flow in main.py.
+
+
+A. Pipeline Execution Model
+---------------------------
+Entry point: codebase/main.py
+
+The orchestrator runs steps in this sequence for full generation:
+1) north_star
+2) features
+3) tone_matrix
+4) segments
+5) goals
+6) themes
+7) templates
+8) timing
+9) schedule
+
+Task aliases in main.py:
+- task1 = north_star + features + tone_matrix + segments + goals
+- task2 = themes + templates + timing + schedule
+- task3 = learning (self-learning loop)
+
+Shared runtime behavior:
+- Data is loaded once via data_loader.load_and_profile() to create a DataProfile object.
+- Step dependencies are passed through in-memory state and fallback disk reads.
+- Steps continue even if one step errors (main.py catches exceptions per step).
+
+
+B. Shared Input Preparation Method
+----------------------------------
+Module: codebase/data_loader.py
+
+Method sequence:
+1) Schema + type normalization
+- Reads CSV from USER_DATA_PATH.
+- Validates expected columns (warns if missing).
+- Converts feature_* columns from TRUE/FALSE-like strings to boolean.
+- Coerces numeric columns to float/int with NaN-safe defaults.
+- Normalizes lifecycle_stage values to lowercase + stripped strings.
+
+2) Derived signal engineering (deterministic)
+- activeness_score:
+  activeness = 0.30*R + 0.40*F + 0.30*M
+  where
+  R = notif_open_rate_30d clipped to [0,1]
+  F = sessions_last_7d clipped to [0,14] / 14
+  M = 0.5*(exercises_completed_7d/21) + 0.5*(streak_current/30)
+
+- churn_risk_score:
+  churn = 0.35*inactive_flag + 0.25*low_sessions + 0.20*low_streak + 0.20*low_notif
+
+- propensity per feature:
+  for each feature_* column:
+  propensity_feature = 0.6*usage_flag + 0.4*motivation_score
+
+3) Prompt-grounding summary generation
+- Builds a compact textual dataset summary:
+  totals, stage distribution, age/region distribution, averages, feature usage percentages,
+  and per-stage behavioral means.
+
+Output artifact:
+- DataProfile(df, feature_cols, lifecycle_stages, summary)
+
+
+C. Step 1 - North Star Generation
+---------------------------------
+Module: codebase/gen_north_star.py
+Output: company_north_star.json
+
+Method: 3-layer extraction + inference
+
+Layer 1: Explicit KB extraction (LLM)
+- Reads full KB text from kb_loader.load_kb().
+- Asks model to detect explicit north-star statements.
+- Expects strict JSON: explicitly_stated, metric_name, exact_quote.
+
+Layer 2: Scored inference fallback (LLM)
+- Triggered only when metric not explicitly stated.
+- Scores candidate metrics (revenue correlation, user value signal, actionability).
+- Picks highest total score as inferred winner.
+
+Layer 3: Structured final JSON synthesis (LLM)
+- Produces full object containing:
+  company, inferred_north_star, supporting_metrics, lifecycle_stages, metadata.
+- Uses robust JSON parsing helpers and fallback defaults if parse fails.
+
+Design property:
+- Hybrid extraction approach to reduce hallucination and improve resilience.
+
+
+D. Step 2 - Feature Goal Map
+----------------------------
+Module: codebase/gen_feature_goal_map.py
+Output: feature_goal_map.json
+
+Method:
+1) Dynamic feature discovery (deterministic)
+- Scans DataProfile.feature_cols (feature_* columns).
+- For each feature computes usage rate + lifecycle stages where feature appears.
+
+2) Per-feature strategy generation (LLM per feature)
+- Prompts with KB context + dataset summary + north-star context.
+- Requests structured feature strategy JSON:
+  description, goals, contribution to north star, propensity levers, expected outcome.
+
+3) Parse safety + fallback
+- If parse fails, applies deterministic fallback fields.
+- Always writes lifecycle_stage from observed data.
+
+Design property:
+- Domain-agnostic because features are discovered from CSV, not hardcoded.
+
+
+E. Step 3 - Tone and Hook Matrix
+--------------------------------
+Module: codebase/gen_tone_hook_matrix.py
+Output: allowed_tone_hook_matrix.json
+
+Method: two-pass LLM architecture
+
+Pass 1: Tone extraction from KB ethics section
+- Extracts allowed_tones and disallowed_tones from KB policy text.
+- Enforces strict JSON and fallback tone lists.
+
+Pass 2: Hook taxonomy + lifecycle matrix build
+- Inputs:
+  - Octolysis drive list from config.OCTOLYSIS_DRIVES
+  - lifecycle goals from config.LIFECYCLE_STAGES
+  - pass-1 tone outputs
+- Produces:
+  - hook_taxonomy: one entry per Octolysis drive
+  - matrix: per lifecycle stage allowed/disallowed tones, primary/secondary drives,
+    hook intensity, and rationale
+
+Validation:
+- Ensures all 8 drives and all lifecycle stages exist; fills missing with defaults.
+
+
+F. Step 4 - User Segmentation
+-----------------------------
+Module: codebase/segmentation_engine.py
+Output: user_segments.csv (plus in-memory segment summary)
+
+Method: deterministic, no LLM
+
+Procedure:
+1) Adds derived signals (from data_loader).
+2) Detects all propensity_* columns dynamically.
+3) Computes each user's dominant_propensity and score.
+4) Computes percentile thresholds for activeness:
+   - bottom 33% = low
+   - middle 34% = moderate
+   - top 33% = high
+5) Assigns MECE segment_id using rules on:
+   - activeness_band
+   - lifecycle_stage
+   - dominant_propensity_score
+   - motivation (for trial split)
+   - days_since_signup (for churn depth)
+6) Builds per-segment metadata/statistics and writes user-level segment file.
+
+Design property:
+- Data-adaptive segmentation using percentile cuts (not fixed global cutoffs).
+
+
+G. Step 5 - Segment Goals by Lifecycle Phase
+--------------------------------------------
+Module: codebase/goal_builder.py
+Output: segment_goals.csv
+
+Method: phase-scaffold + dynamic enrichment
+
+Base framework:
+- Uses an 11-phase lifecycle plan:
+  Trial phases 1-3, Paid phases 4-9, Churned phase 10, Inactive phase 11.
+
+Dynamic enrichment method:
+1) Loads tone matrix (allowed_tone_hook_matrix.json).
+2) Loads feature goal map (feature_goal_map.json).
+3) For each lifecycle phase, injects:
+   - octolysis_drives from tone matrix stage context
+   - key_nudges derived from matching features/sub-goals for that lifecycle
+4) Produces segment x phase planning records with goals and strategy intent.
+
+Design property:
+- Domain-agnostic scaffold with runtime overrides from generated artifacts.
+
+
+H. Step 6 - Communication Themes
+--------------------------------
+Module: codebase/comm_themes.py
+Output: communication_themes.csv
+
+Method: constrained LLM generation per segment x phase
+
+Procedure:
+1) Loads required inputs:
+   user_segments, segment_goals, and tone/hook matrix.
+2) Derives behavioral stats per segment (activeness, churn risk, motivation, open rate).
+3) Builds one generation job per segment x phase.
+4) Runs concurrent LLM calls using ThreadPoolExecutor (default max_workers=2).
+5) Hard-validates outputs so values stay inside allowed sets:
+   - themes must match Octolysis names
+   - tone must be one of allowed tones
+6) Uses safe fallback rows if generation fails.
+
+Design property:
+- Controlled creativity with strict post-parse constraints.
+
+
+I. Step 7 - Message Template Generation
+---------------------------------------
+Module: codebase/message_template_gen.py
+Output: message_templates.csv
+
+Method: slot-constrained transcreation with retries
+
+Procedure:
+1) Input assembly:
+   communication themes + goals + optional feature map.
+2) For each segment x phase combo, requests exactly 5 templates.
+3) Enforces one predefined format archetype per slot:
+   direct_cta, question_hook, social_proof, insight_tip, challenge.
+4) Requires bilingual output with transcreation rules:
+   Hindi/Hinglish should preserve psychology, not literal translation.
+5) Retry policy:
+   up to 3 attempts if fewer than 5 valid templates are returned.
+6) Validation:
+   - hook_type must map to Octolysis drive list
+   - format_type must be a valid slot format id
+7) Pads missing rows with deterministic fallback templates so each combo has exactly 5 rows.
+
+Design property:
+- High output consistency through fixed-slot generation schema.
+
+
+J. Step 8 - Timing Recommendations
+----------------------------------
+Module: codebase/timing_optimizer.py
+Output: timing_recommendations.csv
+
+Method: deterministic statistical window ranking
+
+Procedure:
+1) Merges user segments with preferred_hour from behavioral data.
+2) Maps hour -> standard time windows:
+   early_morning, mid_morning, afternoon, late_afternoon, evening, night.
+3) For each segment:
+   - chooses number of windows by activeness band:
+     high=3, moderate=2, low/churn/inactive=1
+   - picks top-N windows by observed frequency
+   - fills missing with safe fallback order if needed
+4) Computes expected metrics from segment avg_activeness with slot decay:
+   base_ctr = clip(avg_activeness*0.25, 0.01, 0.20)
+   base_eng = clip(avg_activeness*0.55, 0.05, 0.50)
+   decay factor per rank = 1 - 0.15*rank
+
+Design property:
+- Behavior-first timing selection with anti-spam defaults for low activity users.
+
+
+K. Step 9 - Notification Scheduling
+-----------------------------------
+Module: codebase/notification_scheduler.py
+Output: user_notification_schedule.csv
+
+Method: deterministic curriculum-grid schedule builder
+
+Procedure:
+1) Loads segments, timing, templates, goals.
+2) Sanitizes and normalizes segment ids for reliable joins.
+3) Computes final frequency by segment activeness mean:
+   high=8, moderate=5, low=3 notifications/day slots.
+4) Infers template phase alignment by parsing template_id against phase names.
+5) Expands phase day ranges into day-level grid rows per segment.
+6) For each segment-day row:
+   - selects phase-aligned templates (fallback to segment pool if needed)
+   - prioritizes preferred windows for about 75% of slots
+   - fills remainder from other windows
+   - assigns channel mix by activeness:
+     high: 50% push + rest in-app
+     moderate: 75% push + rest in-app
+     low: 50% email + rest push
+7) Writes wide-format notif_1..notif_9 cells as tuple strings:
+   (template_id, time_window, channel)
+
+Design property:
+- Deterministic and phase-aware schedule generation with channel balancing.
+
+
+L. Task 3 - Learning Engine (Iteration 1)
+------------------------------------------
+Module: codebase/learning_engine.py
+Outputs:
+- iteration_1_after_learning/message_templates.csv
+- iteration_1_after_learning/timing_recommendations.csv
+- iteration_1_after_learning/user_notification_schedule.csv
+- learning_delta_report.csv
+
+Overall method: 5-phase hybrid feedback loop
+
+Phase 1: Data ingestion and state evaluation (deterministic)
+1) Loads experiment_results.csv with schema normalization.
+2) Backfills rates from totals if needed (ctr, engagement_rate).
+3) Classifies each template as GOOD / NEUTRAL / BAD using TEMPLATE_THRESHOLDS.
+4) Computes segment guardrails using weighted uninstall rate:
+   weighted uninstall = total_uninstalls / total_sends
+5) Aggregates timing performance by segment_id x notification_window:
+   combined_score = 0.5*mean_ctr + 0.5*mean_engagement
+
+Phase 2: Timing and frequency resolution (deterministic)
+1) Reads iteration_0 timing recommendations.
+2) For each segment, picks top window from Phase-1 combined_score ranking.
+3) Updates expected metrics to observed means.
+4) Logs timing shifts into delta_rows.
+
+Phase 3: Template evolution (hybrid)
+1) Merges template performance by template_id.
+2) If low match, fallback merges by normalized segment + theme, then segment-level average.
+3) GOOD templates: kept and used as references.
+4) BAD templates:
+   - deterministic replacement theme selection (performance-informed + forced variety)
+   - LLM rewrite with stronger hooks and segment-aware references
+   - template_id changed to *_v2 for lineage
+5) NEUTRAL templates:
+   - LLM iteration preserving theme, improving hook urgency
+6) Every mutation is logged in delta_rows with before/after and trigger.
+
+Phase 4: Schedule regeneration + guardrails (deterministic)
+1) Loads wide schedule from iteration_0.
+2) Applies guardrail penalty for breached segments:
+   clear last two populated notif slots per row.
+3) Rewrites template ids and timing windows in each notif cell by parsing tuple/json formats.
+4) Saves updated schedule.
+
+Phase 5: Delta report compilation
+1) Builds tabular learning_delta_report from delta_rows.
+2) Computes summary counters (good/neutral/bad, timing shifts, guardrail actions).
+3) Saves report for auditability.
+
+
+M. Knowledge Bank Usage Method
+------------------------------
+Modules: codebase/config.py + codebase/kb_loader.py
+
+Method:
+- Source path is config.KB_PATH, currently set to knowledge_bank.md.
+- KB text is loaded once and cached (_kb_cache).
+- If KB file missing, pipeline degrades gracefully to behavioral-data-only prompts.
+- build_context() combines KB text + behavioral summary for grounded LLM generation.
+
+
+N. Deterministic vs LLM Boundary
+--------------------------------
+Deterministic modules:
+- data_loader.py
+- segmentation_engine.py
+- timing_optimizer.py
+- notification_scheduler.py
+- most of learning_engine phases 1,2,4,5
+
+LLM-assisted modules:
+- gen_north_star.py
+- gen_feature_goal_map.py
+- gen_tone_hook_matrix.py
+- comm_themes.py
+- message_template_gen.py
+- learning_engine phase 3 template rewrites/iterations
+
+Control mechanisms for LLM outputs:
+- strict JSON prompts
+- safe_parse_json fallback handling
+- constrained vocab/enum post-validation
+- deterministic fallback rows for reliability
+
+
+O. Reproducibility and Failure Behavior
+---------------------------------------
+- Every step writes explicit artifacts to iteration folders.
+- main.py can run single steps or grouped tasks for partial reruns.
+- If one step fails in full run, pipeline continues with next step where possible.
+- learning_delta_report provides audit trail for every adaptive change.
+
+
+P. One-Line Summary
+-------------------
+The project uses a hybrid architecture: deterministic data engineering and scheduling, with tightly constrained LLM generation for strategy and copy, followed by a measurable feedback loop that updates timing, templates, and schedule under guardrail constraints.

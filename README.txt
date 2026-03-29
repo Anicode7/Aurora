@@ -1,5 +1,5 @@
-Project Aurora — Self-Learning Notification Orchestrator
-SpeakX / KRITI 2026
+﻿Project Aurora â€” Self-Learning Notification Orchestrator
+VoiceUp / KRITI 2026
 ================================================================================
 
 Project Aurora is a smart, self-learning notification orchestrator designed to deliver highly personalized user communication. It operates in two continuous phases: Phase 1 creates an initial messaging strategy based on company goals and user behavior, while Phase 2 learns from real-world performance data to autonomously adapt and improve future campaigns.
@@ -45,24 +45,24 @@ A comprehensive, auditable trail of what the system learned and changed. Documen
 
 
 FILE STRUCTURE
-────────────────
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (we have uploaded our the outpusts based on our dummy and sample data)
-|---iteration_0_before_learning/   — Directory containing baseline strategies before experiments
-|---iteration_1_after_learning/    — Directory containing updated strategies post-experiment
+|---iteration_0_before_learning/   â€” Directory containing baseline strategies before experiments
+|---iteration_1_after_learning/    â€” Directory containing updated strategies post-experiment
 |---codebase/
-|   |---data_loader.py           — CSV loading, schema validation, derived signals, summary
-|   |---kb_loader.py             — Loads and injects knowledge bank context into prompts
-|   |---gen_north_star.py        — Generates company_north_star.json
-|   |---gen_feature_goal_map.py  — Generates feature_goal_map.json
-|   |---gen_tone_hook_matrix.py  — Generates allowed_tone_hook_matrix.json
-|   |---segmentation_engine.py   — Generates user_segments.csv (MECE, 14 segments)
-|   |---goal_builder.py          — Generates segment_goals.csv
-|   |---comm_themes.py           — Generates communication_themes.csv
-|   |---message_template_gen.py  — Generates message_templates.csv (5 per combination)
-|   |---timing_optimizer.py      — Generates timing_recommendations.csv
-|   |---notification_scheduler.py— Generates user_notification_schedule.csv
-|   |---learning_engine.py       — Task 3: classifies results, learns, outputs Iteration 1
-|   |---main.py                  — CLI orchestrator with per-step control
+|   |---data_loader.py           â€” CSV loading, schema validation, derived signals, summary
+|   |---kb_loader.py             â€” Loads and injects knowledge bank context into prompts
+|   |---gen_north_star.py        â€” Generates company_north_star.json
+|   |---gen_feature_goal_map.py  â€” Generates feature_goal_map.json
+|   |---gen_tone_hook_matrix.py  â€” Generates allowed_tone_hook_matrix.json
+|   |---segmentation_engine.py   â€” Generates user_segments.csv (MECE, 14 segments)
+|   |---goal_builder.py          â€” Generates segment_goals.csv
+|   |---comm_themes.py           â€” Generates communication_themes.csv
+|   |---message_template_gen.py  â€” Generates message_templates.csv (5 per combination)
+|   |---timing_optimizer.py      â€” Generates timing_recommendations.csv
+|   |---notification_scheduler.pyâ€” Generates user_notification_schedule.csv
+|   |---learning_engine.py       â€” Task 3: classifies results, learns, outputs Iteration 1
+|   |---main.py                  â€” CLI orchestrator with per-step control
 |---experimen_results.csv
 |---learning_delta_report.csv
 |---user_behavioral_data.csv(dummy data to be replaced in demo)
@@ -71,13 +71,13 @@ FILE STRUCTURE
 
 
 SETUP
-──────
+â”€â”€â”€â”€â”€â”€
 1. Install Ollama: https://ollama.com
 2. Pull model:  ollama pull llama3.2:3b
 3. pip install pandas requests
 
 RUN INSTRUCTIONS
-─────────────────
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Full pipeline (all tasks):
 python main.py
 
@@ -91,7 +91,7 @@ python main.py --steps task2
 python main.py --steps north_star
 python main.py --steps segments goals
 
-# Learning engine (Task 3 — needs experiment_results.csv from SpeakX):
+# Learning engine (Task 3 â€” needs experiment_results.csv from VoiceUp):
 python main.py --steps task3
 
 # Custom data file:
@@ -103,7 +103,8 @@ python main.py --list
 # if any terminal timeout errors occur rerun the step
 
 MODELS
-───────
-Generation : llama3.2:3b (configurable in config.py → GEN_MODEL)
+â”€â”€â”€â”€â”€â”€â”€
+Generation : llama3.2:3b (configurable in config.py â†’ GEN_MODEL)
+
 
 

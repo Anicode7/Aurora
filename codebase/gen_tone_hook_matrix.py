@@ -1,9 +1,9 @@
-# gen_tone_hook_matrix.py
+﻿# gen_tone_hook_matrix.py
 # Generates: allowed_tone_hook_matrix.json
 #
 # Output format:
 # {
-#   "allowed_tones":    ["Motivational", "Encouraging", ...],   ← flat list, KB-extracted
+#   "allowed_tones":    ["Motivational", "Encouraging", ...],   â† flat list, KB-extracted
 #   "disallowed_tones": ["Shaming", "Aggressive sales pressure", ...],
 #   "hook_taxonomy": [
 #     {
@@ -17,8 +17,8 @@
 # }
 #
 # LLM backend: local Ollama (via llm.py wrapper).
-# Tones MUST be extracted from KB's Ethical Communication Guidelines — not invented.
-# ─────────────────────────────────────────────────────────────
+# Tones MUST be extracted from KB's Ethical Communication Guidelines â€” not invented.
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 from llm         import llm, safe_parse_json, save_json
 from data_loader import load_and_profile, DataProfile
@@ -28,17 +28,17 @@ from config      import OCTOLYSIS_DRIVES, LIFECYCLE_STAGES
 import datetime
 
 
-# ── Two-pass architecture ─────────────────────────────────────
+# â”€â”€ Two-pass architecture â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Pass 1: Extract global allowed/disallowed tones from KB
 # Pass 2: Build per-lifecycle matrix + hook_taxonomy using those tones
 # Splitting into two focused prompts improves Ollama reliability over
 # one massive prompt, and lets us validate each pass independently.
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 
 def _pass1_extract_tones(context: str) -> dict:
     """
-    Pass 1 — Extract global allowed and disallowed tones directly from the
+    Pass 1 â€” Extract global allowed and disallowed tones directly from the
     KB's Ethical Communication Guidelines section.
     Returns: { "allowed_tones": [...], "disallowed_tones": [...] }
     """
@@ -48,7 +48,7 @@ def _pass1_extract_tones(context: str) -> dict:
             "Your ONLY job is to read the Knowledge Bank provided and extract "
             "the allowed and disallowed communication tones exactly as stated. "
             "Do NOT invent, paraphrase loosely, or add tones not in the document. "
-            "Output ONLY valid JSON — no markdown, no explanation."
+            "Output ONLY valid JSON â€” no markdown, no explanation."
         ),
         prompt=f"""
 {context}
@@ -88,7 +88,7 @@ def _pass2_build_taxonomy_and_matrix(
     stages_block: str,
 ) -> dict:
     """
-    Pass 2 — Using the KB context and the already-extracted tones, build:
+    Pass 2 â€” Using the KB context and the already-extracted tones, build:
       - hook_taxonomy  : one entry per Octolysis drive, grounded in KB
       - matrix         : per-lifecycle-stage drive selection + tone rationale
     """
@@ -100,7 +100,7 @@ def _pass2_build_taxonomy_and_matrix(
             "You are a behavioral product communication strategist specialising in "
             "Octolysis gamification framework. Use the Knowledge Bank to ground every "
             "application description and example phrase in real product context. "
-            "Output ONLY valid JSON — no markdown, no explanation."
+            "Output ONLY valid JSON â€” no markdown, no explanation."
         ),
         prompt=f"""
 {context}
@@ -115,18 +115,18 @@ Already-extracted tones from KB Ethical Communication Guidelines:
   Allowed    : {allowed_str}
   Disallowed : {disallowed_str}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TASK A — hook_taxonomy
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+TASK A â€” hook_taxonomy
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 For EACH of the 8 Octolysis drives generate:
   - core_drive     : exact drive name from the list above
   - application    : one sentence grounded in the KB (product features, user goals, journey)
-  - example_phrases: exactly 2 items — [0] natural English, [1] conversational Hindi (use
+  - example_phrases: exactly 2 items â€” [0] natural English, [1] conversational Hindi (use
                      Hinglish style: mix Hindi script + Roman where natural)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TASK B — per-lifecycle matrix
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+TASK B â€” per-lifecycle matrix
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 For EACH lifecycle stage choose from the ALREADY-EXTRACTED tones above:
   - allowed_tones    : subset of the allowed list most appropriate for this stage
   - disallowed_tones : subset of the disallowed list most relevant to warn against
@@ -201,7 +201,7 @@ Return ONLY this JSON:
 
     result = safe_parse_json(raw, fallback=fallback)
 
-    # ── Validate and patch ────────────────────────────────────
+    # â”€â”€ Validate and patch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if not isinstance(result, dict):
         result = fallback
 
@@ -221,7 +221,7 @@ Return ONLY this JSON:
     return result
 
 
-# ── Public entry point ────────────────────────────────────────
+# â”€â”€ Public entry point â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def gen_tone_hook_matrix(profile: DataProfile = None, output_dir: str = None) -> dict:
     print("\n[3/5] Generating: allowed_tone_hook_matrix.json")
@@ -240,20 +240,20 @@ def gen_tone_hook_matrix(profile: DataProfile = None, output_dir: str = None) ->
         for s, v in LIFECYCLE_STAGES.items()
     )
 
-    # ── Pass 1: extract tones from KB ────────────────────────
+    # â”€â”€ Pass 1: extract tones from KB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     print("  [Pass 1/2] Extracting tones from KB Ethical Communication Guidelines...")
     tones = _pass1_extract_tones(context)
     allowed_tones    = tones["allowed_tones"]
     disallowed_tones = tones["disallowed_tones"]
-    print(f"    → {len(allowed_tones)} allowed | {len(disallowed_tones)} disallowed")
+    print(f"    â†’ {len(allowed_tones)} allowed | {len(disallowed_tones)} disallowed")
 
-    # ── Pass 2: taxonomy + matrix ─────────────────────────────
+    # â”€â”€ Pass 2: taxonomy + matrix â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     print("  [Pass 2/2] Building hook taxonomy and per-stage matrix...")
     payload = _pass2_build_taxonomy_and_matrix(
         context, allowed_tones, disallowed_tones, drives_block, stages_block
     )
 
-    # ── Assemble final output ─────────────────────────────────
+    # â”€â”€ Assemble final output â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     data = {
         "allowed_tones":    allowed_tones,        # flat global list (KB-extracted)
         "disallowed_tones": disallowed_tones,      # flat global list (KB-extracted)
@@ -266,11 +266,11 @@ def gen_tone_hook_matrix(profile: DataProfile = None, output_dir: str = None) ->
     }
 
     save_json(data, "allowed_tone_hook_matrix.json", output_dir)
-    print("  ✓ Saved → allowed_tone_hook_matrix.json")
+    print("  âœ“ Saved â†’ allowed_tone_hook_matrix.json")
     return data
 
 
-# ── Fallback defaults ─────────────────────────────────────────
+# â”€â”€ Fallback defaults â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _default_hook_taxonomy() -> list:
     return [
@@ -278,8 +278,8 @@ def _default_hook_taxonomy() -> list:
             "core_drive":      "Epic Meaning",
             "application":     "Connect daily English practice to transformative career and life outcomes for Tier 2/3 users.",
             "example_phrases": [
-                "Join 1M+ learners transforming their careers with SpeakX!",
-                "Apni zindagi badlo — SpeakX ke saath aaj se shuru karo!",
+                "Join 1M+ learners transforming their careers with VoiceUp!",
+                "Apni zindagi badlo â€” VoiceUp ke saath aaj se shuru karo!",
             ],
         },
         {
@@ -287,14 +287,14 @@ def _default_hook_taxonomy() -> list:
             "application":     "Celebrate streaks, completed lessons, and fluency milestones to reinforce daily habit.",
             "example_phrases": [
                 "You completed 5 lessons! Keep the momentum going.",
-                "Aapne 5 lessons kiye — kya baat hai! Aage badho!",
+                "Aapne 5 lessons kiye â€” kya baat hai! Aage badho!",
             ],
         },
         {
             "core_drive":      "Empowerment",
             "application":     "Let users choose their own speaking topics and practice scenarios to build autonomy.",
             "example_phrases": [
-                "Choose your learning path today — job interview, confidence, or daily conversation.",
+                "Choose your learning path today â€” job interview, confidence, or daily conversation.",
                 "Aaj kya sikhna chahte ho? Aap hi decide karo!",
             ],
         },
@@ -302,40 +302,40 @@ def _default_hook_taxonomy() -> list:
             "core_drive":      "Ownership",
             "application":     "Make earned coins, streaks, and progress feel personally owned and worth protecting.",
             "example_phrases": [
-                "Your 50 coins are waiting to be spent — don't let them go to waste!",
-                "Tumhare 50 coins pade hain — inhe use karo!",
+                "Your 50 coins are waiting to be spent â€” don't let them go to waste!",
+                "Tumhare 50 coins pade hain â€” inhe use karo!",
             ],
         },
         {
             "core_drive":      "Social Influence",
             "application":     "Surface leaderboard rankings and friend activity to trigger competitive social proof.",
             "example_phrases": [
-                "3 friends joined this week — invite more and climb the leaderboard!",
-                "Tere 3 dost aa gaye — tu bhi aage badh aur rank badhao!",
+                "3 friends joined this week â€” invite more and climb the leaderboard!",
+                "Tere 3 dost aa gaye â€” tu bhi aage badh aur rank badhao!",
             ],
         },
         {
             "core_drive":      "Scarcity",
             "application":     "Highlight limited trial days and expiring offers to create genuine urgency.",
             "example_phrases": [
-                "Only 2 days left in your trial — upgrade now to keep your streak!",
-                "Sirf 2 din bache hain trial mein — abhi upgrade karo!",
+                "Only 2 days left in your trial â€” upgrade now to keep your streak!",
+                "Sirf 2 din bache hain trial mein â€” abhi upgrade karo!",
             ],
         },
         {
             "core_drive":      "Unpredictability",
             "application":     "Surprise rewards and mystery challenges in Sia conversations keep users coming back.",
             "example_phrases": [
-                "Surprise reward inside today's lesson — open to find out!",
-                "Aaj ke lesson mein ek surprise hai — dekho kya milta hai!",
+                "Surprise reward inside today's lesson â€” open to find out!",
+                "Aaj ke lesson mein ek surprise hai â€” dekho kya milta hai!",
             ],
         },
         {
             "core_drive":      "Loss Avoidance",
             "application":     "Protect streak anxiety and rank loss to drive daily check-ins and re-engagement.",
             "example_phrases": [
-                "Your 7-day streak is at risk — practice now to save it!",
-                "Tera 7-din ka streak toot sakta hai — abhi practice karo!",
+                "Your 7-day streak is at risk â€” practice now to save it!",
+                "Tera 7-din ka streak toot sakta hai â€” abhi practice karo!",
             ],
         },
     ]
@@ -353,7 +353,7 @@ def _default_stage_entry(stage: str, allowed: list = None, disallowed: list = No
             "secondary_drives": ["Epic Meaning", "Unpredictability"],
             "hook_intensity":   "high",
             "tone_rationale":   (
-                "Trial users need activation energy and value discovery — "
+                "Trial users need activation energy and value discovery â€” "
                 "KB guidelines prohibit pressure-heavy tactics; warm encouragement converts best."
             ),
         },
@@ -364,7 +364,7 @@ def _default_stage_entry(stage: str, allowed: list = None, disallowed: list = No
             "secondary_drives": ["Ownership", "Unpredictability"],
             "hook_intensity":   "medium",
             "tone_rationale":   (
-                "Paid users respond to progress affirmation and streak protection — "
+                "Paid users respond to progress affirmation and streak protection â€” "
                 "celebratory and motivational tones reinforce investment without pressure."
             ),
         },
@@ -375,7 +375,7 @@ def _default_stage_entry(stage: str, allowed: list = None, disallowed: list = No
             "secondary_drives": ["Unpredictability", "Accomplishment"],
             "hook_intensity":   "low",
             "tone_rationale":   (
-                "Churned users need a soft, nostalgic re-entry — "
+                "Churned users need a soft, nostalgic re-entry â€” "
                 "KB bans shaming and pressure; empathetic value reminders work best."
             ),
         },
@@ -386,7 +386,7 @@ def _default_stage_entry(stage: str, allowed: list = None, disallowed: list = No
             "secondary_drives": ["Social Influence", "Scarcity"],
             "hook_intensity":   "medium",
             "tone_rationale":   (
-                "Inactive users respond to streak-loss warnings and FOMO — "
+                "Inactive users respond to streak-loss warnings and FOMO â€” "
                 "mild urgency is KB-permitted; shaming and fear-mongering are not."
             ),
         },

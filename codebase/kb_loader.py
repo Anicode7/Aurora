@@ -1,28 +1,28 @@
-# kb_loader.py
-# ─────────────────────────────────────────────────────────────
+﻿# kb_loader.py
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Loads the company Knowledge Bank (a plain .txt or .md file)
 # and makes it available for direct injection into LLM prompts.
 #
 # WHY NO RAG:
 #   The KB is intentionally small (1-2 pages / ~2000-4000 chars).
 #   For a document this size, full injection is strictly better
-#   than RAG — nothing gets missed by a retrieval step, and you
+#   than RAG â€” nothing gets missed by a retrieval step, and you
 #   don't need ChromaDB, embeddings, or any vector infrastructure.
 #
 # DOMAIN AGNOSTICITY:
-#   Swap speakx_kb.txt for any other company's KB markdown and
+#   Swap knowledge_bank.md for any other company's KB markdown and
 #   the entire pipeline re-purposes itself automatically.
 #   Every generator calls build_context() which returns:
 #     [KB full text] + [behavioral data summary]
 #   so the LLM always reasons from both company knowledge AND
 #   real user numbers simultaneously.
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import os
 from config import KB_PATH
 
 
-# ── Module-level cache so the file is only read once ─────────
+# â”€â”€ Module-level cache so the file is only read once â”€â”€â”€â”€â”€â”€â”€â”€â”€
 _kb_cache: str | None = None
 
 
@@ -32,7 +32,7 @@ def load_kb(path: str = KB_PATH) -> str:
     Caches the result so repeated calls are free.
 
     Returns empty string (with a warning) if the file doesn't
-    exist — the system degrades gracefully and relies on
+    exist â€” the system degrades gracefully and relies on
     behavioral data alone.
     """
     global _kb_cache
@@ -86,7 +86,7 @@ def get_kb_section(heading: str, path: str = KB_PATH) -> str:
     if section_lines:
         return "\n".join(section_lines).strip()
 
-    # Heading not found — return full KB so nothing is lost
+    # Heading not found â€” return full KB so nothing is lost
     return kb
 
 
@@ -95,9 +95,9 @@ def build_context(data_summary: str, path: str = KB_PATH) -> str:
     The main function every generator calls.
 
     Returns a single string combining:
-      1. The full KB text  — company vision, north star, features,
+      1. The full KB text  â€” company vision, north star, features,
                              tones, personas, metrics, journey stages
-      2. The behavioral data summary — real numbers from the CSV:
+      2. The behavioral data summary â€” real numbers from the CSV:
                              stage distribution, feature usage %,
                              per-stage averages, propensity signals
 
@@ -125,3 +125,4 @@ def build_context(data_summary: str, path: str = KB_PATH) -> str:
     sections.append(data_summary)
 
     return "\n".join(sections)
+

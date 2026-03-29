@@ -1,4 +1,4 @@
-# gen_north_star.py  →  company_north_star.json
+﻿# gen_north_star.py  â†’  company_north_star.json
 # 3-layer approach: L1 explicit KB, L2 scored inference, L3 full JSON build.
 
 from kb_loader   import load_kb
@@ -49,7 +49,7 @@ Return ONLY a single JSON object (not an array):
 
     # Layer 2: scored inference fallback
     if not extracted.get("explicitly_stated"):
-        print("  [L2] Not explicit — running structured scoring ...")
+        print("  [L2] Not explicit â€” running structured scoring ...")
         raw_l2 = llm(
             system="You are a product analytics expert. Output ONLY valid JSON.",
             prompt=f"""KNOWLEDGE BASE:\n{kb}\n\nDATASET SUMMARY:\n{profile.summary}
@@ -70,7 +70,7 @@ Return ONLY a single JSON object (not an array):
         scored    = _unwrap(safe_parse_json(raw_l2, fallback={"winner": "W1 Retention", "reasoning": "High revenue correlation."}))
         extracted = scored
         method    = "scored_inference"
-        print(f"  [L2] Winner: {scored.get('winner')} — {str(scored.get('reasoning',''))[:80]}...")
+        print(f"  [L2] Winner: {scored.get('winner')} â€” {str(scored.get('reasoning',''))[:80]}...")
 
     metric_name = extracted.get("metric_name") or extracted.get("winner") or "W1 Retention"
     reasoning   = extracted.get("exact_quote")  or extracted.get("reasoning", "")
@@ -92,7 +92,7 @@ Return ONLY a single JSON object (not an array):
     "metric_name": "{metric_name}",
     "how_it_was_determined": "{method}",
     "definition": "<clear 1-2 sentence definition>",
-    "justification": "<why this is the north star — 2-3 sentences>",
+    "justification": "<why this is the north star â€” 2-3 sentences>",
     "measurable_proxy": "<formula using CSV columns>"
   }},
   "supporting_metrics": [
@@ -110,7 +110,7 @@ Return ONLY a single JSON object (not an array):
     )
 
     data = _unwrap(safe_parse_json(raw_l3, fallback={
-        "company": "SpeakX",
+        "company": "VoiceUp",
         "inferred_north_star": {
             "metric_name": metric_name,
             "how_it_was_determined": method,

@@ -1,4 +1,4 @@
-# SpeakX Knowledge Bank
+# VoiceUp Knowledge Bank
 *Version 1.0 — Project Aurora*
 
 ---
@@ -7,7 +7,7 @@
 
 **Vision:** To make confident English communication accessible to every Indian — regardless of city, background, or education.
 
-**Mission:** SpeakX helps Hindi and regional language speakers in Tier 1, 2, and 3 cities transform from "I understand English but can't speak it" to fluent, confident communicators — through daily, guided speaking practice with our AI teacher Sia.
+**Mission:** VoiceUp helps Hindi and regional language speakers in Tier 1, 2, and 3 cities transform from "I understand English but can't speak it" to fluent, confident communicators — through daily, guided speaking practice with our AI teacher Sia.
 
 We believe language confidence is a career multiplier. A working professional who can speak English fluently earns 30–40% more, gets promoted faster, and commands respect in interviews and meetings. We exist to close that gap — one conversation at a time.
 

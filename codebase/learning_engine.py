@@ -1,8 +1,8 @@
-# learning_engine.py
+﻿# learning_engine.py
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# Task 3: Execution & Self-Learning — 5-Phase Architecture
+# Task 3: Execution & Self-Learning â€” 5-Phase Architecture
 
 #
 
@@ -16,7 +16,7 @@
 
 # Phase 5: Delta Report Compilation
 
-# ─────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 
 
@@ -56,11 +56,11 @@ from config import (
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-# GLOBALS — variety tracking (reset each run)
+# GLOBALS â€” variety tracking (reset each run)
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -118,11 +118,11 @@ SEGMENT_ANGLES = {
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-# HELPERS — creative angles & theme rotation
+# HELPERS â€” creative angles & theme rotation
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -351,7 +351,7 @@ def _identify_replacement_theme(
 
 
 
-    # Strategy 3: exhausted — reset and pick first different
+    # Strategy 3: exhausted â€” reset and pick first different
 
     _used_replacement_themes[segment_id] = set()
 
@@ -371,11 +371,11 @@ def _identify_replacement_theme(
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # LLM REWRITE FUNCTIONS
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -399,7 +399,7 @@ def _rewrite_bad_template(
 
     refs_block = "\n".join(
 
-        f'  - [{r.get("theme", "")}] "{r.get("title_en", "")}" — CTR: {r.get("ctr", "?")}'
+        f'  - [{r.get("theme", "")}] "{r.get("title_en", "")}" â€” CTR: {r.get("ctr", "?")}'
 
         for r in good_refs[:3]
 
@@ -413,7 +413,7 @@ def _rewrite_bad_template(
 
         avoid_block = "ALREADY USED TITLES (DO NOT reuse or paraphrase):\n" + "\n".join(
 
-            f'  ❌ "{t}"' for t in list(_generated_titles)[-12:]
+            f'  âŒ "{t}"' for t in list(_generated_titles)[-12:]
 
         )
 
@@ -429,7 +429,7 @@ def _rewrite_bad_template(
 
 
 
-FAILED TEMPLATE (BAD — rewrite completely):
+FAILED TEMPLATE (BAD â€” rewrite completely):
 
   template_id : {original_row.get('template_id', '')}
 
@@ -457,7 +457,7 @@ MANDATORY CREATIVE ANGLE: Use a "{angle}" metaphor/framing.
 
 
 
-TOP PERFORMERS (for tone reference only — do NOT copy):
+TOP PERFORMERS (for tone reference only â€” do NOT copy):
 
 {refs_block}
 
@@ -465,15 +465,15 @@ TOP PERFORMERS (for tone reference only — do NOT copy):
 
 STRICT RULES:
 
-1. Title MUST use the "{angle}" angle — NOT generic motivation
+1. Title MUST use the "{angle}" angle â€” NOT generic motivation
 
 2. Title max 8 words. Must be COMPLETELY unique from everything above
 
-3. Body max 20 words. Mention a SPECIFIC SpeakX feature (AI tutor, pronunciation checker, streak tracker, live practice rooms, vocabulary builder, daily challenges)
+3. Body max 20 words. Mention a SPECIFIC VoiceUp feature (AI tutor, pronunciation checker, streak tracker, live practice rooms, vocabulary builder, daily challenges)
 
 4. CTA must be action-specific (NOT "Start Now" or "Learn Now")
 
-5. Hindi must be natural, not translated — use colloquial tone
+5. Hindi must be natural, not translated â€” use colloquial tone
 
 
 
@@ -505,19 +505,19 @@ Return ONLY valid JSON:
 
     result = safe_parse_json(raw, fallback={
 
-        "title_en": f"Your {angle.title()} Awaits — {new_theme}",
+        "title_en": f"Your {angle.title()} Awaits â€” {new_theme}",
 
-        "body_en": f"Tap into your {angle} with SpeakX's AI tutor today.",
+        "body_en": f"Tap into your {angle} with VoiceUp's AI tutor today.",
 
-        "title_hi": f"आपकी {angle} यात्रा शुरू होती है",
+        "title_hi": f"à¤†à¤ªà¤•à¥€ {angle} à¤¯à¤¾à¤¤à¥à¤°à¤¾ à¤¶à¥à¤°à¥‚ à¤¹à¥‹à¤¤à¥€ à¤¹à¥ˆ",
 
-        "body_hi": "SpeakX AI ट्यूटर के साथ आज अभ्यास करें।",
+        "body_hi": "VoiceUp AI à¤Ÿà¥à¤¯à¥‚à¤Ÿà¤° à¤•à¥‡ à¤¸à¤¾à¤¥ à¤†à¤œ à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤•à¤°à¥‡à¤‚à¥¤",
 
         "hook_type": new_theme,
 
         "cta_en": "Start Practicing",
 
-        "cta_hi": "अभ्यास शुरू करें",
+        "cta_hi": "à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤¶à¥à¤°à¥‚ à¤•à¤°à¥‡à¤‚",
 
         "improvement_rationale": f"Applied {new_theme} via {angle} angle for {original_row.get('segment_id', '')}",
 
@@ -557,7 +557,7 @@ def _iterate_neutral_template(
 
     refs_block = "\n".join(
 
-        f'  - [{r.get("theme", "")}] "{r.get("title_en", "")}" — CTR: {r.get("ctr", "?")}'
+        f'  - [{r.get("theme", "")}] "{r.get("title_en", "")}" â€” CTR: {r.get("ctr", "?")}'
 
         for r in good_refs[:3]
 
@@ -571,7 +571,7 @@ def _iterate_neutral_template(
 
         avoid_block = "ALREADY USED TITLES (DO NOT reuse or paraphrase):\n" + "\n".join(
 
-            f'  ❌ "{t}"' for t in list(_generated_titles)[-12:]
+            f'  âŒ "{t}"' for t in list(_generated_titles)[-12:]
 
         )
 
@@ -595,7 +595,7 @@ NEUTRAL TEMPLATE (needs sharper hook):
 
   theme       : {theme}
 
-  current     : "{original_row.get('title_en', '')}" — "{original_row.get('body_en', '')}"
+  current     : "{original_row.get('title_en', '')}" â€” "{original_row.get('body_en', '')}"
 
   CTR         : {original_row.get('ctr', 0):.2%}
 
@@ -621,9 +621,9 @@ TOP PERFORMERS (tone reference only):
 
 STRICT RULES:
 
-1. KEEP theme "{theme}" — same motivational driver
+1. KEEP theme "{theme}" â€” same motivational driver
 
-2. Title MUST use "{angle}" angle — fresh metaphor
+2. Title MUST use "{angle}" angle â€” fresh metaphor
 
 3. Title max 8 words. COMPLETELY unique
 
@@ -665,15 +665,15 @@ Return ONLY valid JSON:
 
         "body_en": original_row.get("body_en", "Practice makes perfect."),
 
-        "title_hi": original_row.get("title_hi", "जारी रखें!"),
+        "title_hi": original_row.get("title_hi", "à¤œà¤¾à¤°à¥€ à¤°à¤–à¥‡à¤‚!"),
 
-        "body_hi": original_row.get("body_hi", "अभ्यास से सिद्धि होती है।"),
+        "body_hi": original_row.get("body_hi", "à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤¸à¥‡ à¤¸à¤¿à¤¦à¥à¤§à¤¿ à¤¹à¥‹à¤¤à¥€ à¤¹à¥ˆà¥¤"),
 
         "hook_type": theme,
 
         "cta_en": "Continue Now",
 
-        "cta_hi": "जारी रखें",
+        "cta_hi": "à¤œà¤¾à¤°à¥€ à¤°à¤–à¥‡à¤‚",
 
         "improvement_rationale": f"Sharpened with {angle} angle.",
 
@@ -693,11 +693,11 @@ Return ONLY valid JSON:
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # PHASE 1: Data Ingestion & State Evaluation (deterministic)
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -781,7 +781,7 @@ def evaluate_segment_guardrails(exp_df: pd.DataFrame) -> dict:
 
     if "segment_id" not in exp_df.columns:
 
-        print("  [P1] Missing segment_id column — cannot evaluate guardrails")
+        print("  [P1] Missing segment_id column â€” cannot evaluate guardrails")
 
         return {}
 
@@ -867,7 +867,7 @@ def aggregate_timing_performance(exp_df: pd.DataFrame) -> pd.DataFrame:
 
     if "segment_id" not in exp_df.columns or "notification_window" not in exp_df.columns:
 
-        print("  [P1] Missing segment_id/notification_window — skipping timing aggregation")
+        print("  [P1] Missing segment_id/notification_window â€” skipping timing aggregation")
 
         return pd.DataFrame()
 
@@ -915,7 +915,7 @@ def aggregate_timing_performance(exp_df: pd.DataFrame) -> pd.DataFrame:
 
 
 
-    print(f"  [P1] {len(timing_agg)} segment × window combinations scored")
+    print(f"  [P1] {len(timing_agg)} segment Ã— window combinations scored")
 
     return timing_agg
 
@@ -923,11 +923,11 @@ def aggregate_timing_performance(exp_df: pd.DataFrame) -> pd.DataFrame:
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # PHASE 2: Timing & Frequency Resolution (deterministic)
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -957,7 +957,7 @@ def resolve_timing(
 
     if not os.path.exists(iter0_timing_path):
 
-        print(f"  [P2] {iter0_timing_path} not found — skipping")
+        print(f"  [P2] {iter0_timing_path} not found â€” skipping")
 
         return pd.DataFrame()
 
@@ -969,7 +969,7 @@ def resolve_timing(
 
     if timing_perf.empty:
 
-        print("  [P2] No timing performance data — keeping Iteration 0 as-is")
+        print("  [P2] No timing performance data â€” keeping Iteration 0 as-is")
 
         timing_df["iteration"] = 1
 
@@ -1075,11 +1075,11 @@ def resolve_timing(
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # PHASE 3: Template Evolution (hybrid)
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -1107,7 +1107,7 @@ def evolve_templates(
 
 
 
-    # ── Normalise segment_id formats before merging ───────────
+    # â”€â”€ Normalise segment_id formats before merging â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     def normalise_seg(s):
 
@@ -1137,7 +1137,7 @@ def evolve_templates(
 
 
 
-    # ── Try direct template_id merge first ────────────────────
+    # â”€â”€ Try direct template_id merge first â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     perf_cols = ["template_id", "ctr", "engagement_rate", "uninstall_rate", "performance_status"]
 
@@ -1165,11 +1165,11 @@ def evolve_templates(
 
 
 
-    # ── Fallback: match on normalised segment_id + theme ──────
+    # â”€â”€ Fallback: match on normalised segment_id + theme â”€â”€â”€â”€â”€â”€
 
     if matched < len(iter1) * 0.5:
 
-        print("  [P3] Low match rate — attempting fallback merge on normalised segment_id + theme ...")
+        print("  [P3] Low match rate â€” attempting fallback merge on normalised segment_id + theme ...")
 
 
 
@@ -1367,7 +1367,7 @@ def evolve_templates(
 
 
 
-    # ── Collect GOOD templates as references ──────────────────
+    # â”€â”€ Collect GOOD templates as references â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     good_mask = iter1["performance_status"] == "GOOD"
 
@@ -1387,7 +1387,7 @@ def evolve_templates(
 
 
 
-    # ── Handle BAD templates ──────────────────────────────────
+    # â”€â”€ Handle BAD templates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     bad_mask = iter1["performance_status"] == "BAD"
 
@@ -1438,13 +1438,13 @@ def evolve_templates(
 
 
 
-        # ── FIX: extract rationale from the returned dict ─────
+        # â”€â”€ FIX: extract rationale from the returned dict â”€â”€â”€â”€â”€
 
         improvement_rationale = improved.get(
 
             "improvement_rationale",
 
-            f"Theme swap: {old_theme} → {new_theme}",
+            f"Theme swap: {old_theme} â†’ {new_theme}",
 
         )
 
@@ -1468,7 +1468,7 @@ def evolve_templates(
 
         if "cta_hi" in iter1.columns:
 
-            iter1.at[idx, "cta_hi"] = improved.get("cta_hi", "अभी शुरू करें")
+            iter1.at[idx, "cta_hi"] = improved.get("cta_hi", "à¤…à¤­à¥€ à¤¶à¥à¤°à¥‚ à¤•à¤°à¥‡à¤‚")
 
 
 
@@ -1492,7 +1492,7 @@ def evolve_templates(
 
 
 
-    # ── Handle NEUTRAL templates ──────────────────────────────
+    # â”€â”€ Handle NEUTRAL templates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     neutral_mask = iter1["performance_status"] == "NEUTRAL"
 
@@ -1520,7 +1520,7 @@ def evolve_templates(
 
 
 
-        # ── FIX: extract rationale from the returned dict ─────
+        # â”€â”€ FIX: extract rationale from the returned dict â”€â”€â”€â”€â”€
 
         improvement_rationale = improved.get(
 
@@ -1548,7 +1548,7 @@ def evolve_templates(
 
         if "cta_hi" in iter1.columns:
 
-            iter1.at[idx, "cta_hi"] = improved.get("cta_hi", "अभ्यास करें")
+            iter1.at[idx, "cta_hi"] = improved.get("cta_hi", "à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤•à¤°à¥‡à¤‚")
 
 
 
@@ -1656,11 +1656,11 @@ def _pack_notif_cell(parsed):
     return parsed.get("_raw", "")
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # PHASE 4: Schedule Regeneration (deterministic)
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -1694,7 +1694,7 @@ def regenerate_schedule(
 
     if not os.path.exists(iter0_schedule_path):
 
-        print(f"  [P4] {iter0_schedule_path} not found — skipping schedule regeneration")
+        print(f"  [P4] {iter0_schedule_path} not found â€” skipping schedule regeneration")
 
         return pd.DataFrame()
 
@@ -1704,7 +1704,7 @@ def regenerate_schedule(
 
 
 
-    # ── Build lookup maps ─────────────────────────────────────
+    # â”€â”€ Build lookup maps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     template_lookup = {}
 
@@ -1752,7 +1752,7 @@ def regenerate_schedule(
 
 
 
-    # ── Apply guardrail frequency reduction (wide format) ─────
+    # â”€â”€ Apply guardrail frequency reduction (wide format) â”€â”€â”€â”€â”€
 
     breached_segments = {sid for sid, info in guardrails.items() if info["guardrail_breached"]}
 
@@ -1812,7 +1812,7 @@ def regenerate_schedule(
 
 
 
-    # ── Update template IDs + timings in schedule ─────────────
+    # â”€â”€ Update template IDs + timings in schedule â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     updates = 0
 
@@ -1922,11 +1922,11 @@ def regenerate_schedule(
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # PHASE 5: Delta Report Helper
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -1972,11 +1972,11 @@ def _delta_row(
 
 
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 # MAIN PIPELINE
 
-# ═════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
 
@@ -2042,7 +2042,7 @@ def run_learning_engine(
 
 
 
-    # ── Normalise arguments (handle main.py's call convention) ──
+    # â”€â”€ Normalise arguments (handle main.py's call convention) â”€â”€
 
     # main.py passes (templates_csv_path, timing_csv_path, output_dir)
 
@@ -2132,11 +2132,11 @@ def run_learning_engine(
 
 
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     # PHASE 1: Data Ingestion & State Evaluation
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     print("\n" + "=" * 60)
 
@@ -2169,11 +2169,11 @@ def run_learning_engine(
 
 
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     # PHASE 2: Timing & Frequency Resolution
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     print("\n" + "=" * 60)
 
@@ -2195,11 +2195,11 @@ def run_learning_engine(
 
 
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     # PHASE 3: Template Evolution
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     print("\n" + "=" * 60)
 
@@ -2229,11 +2229,11 @@ def run_learning_engine(
 
 
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     # PHASE 4: Schedule Regeneration + Guardrail Enforcement
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     print("\n" + "=" * 60)
 
@@ -2269,7 +2269,7 @@ def run_learning_engine(
 
 
 
-    # Copy unchanged files from iter0 → iter1
+    # Copy unchanged files from iter0 â†’ iter1
 
     for fname in ["user_segments.csv"]:
 
@@ -2285,11 +2285,11 @@ def run_learning_engine(
 
 
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     # PHASE 5: Delta Report Compilation
 
-    # ═══════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
     print("\n" + "=" * 60)
 
