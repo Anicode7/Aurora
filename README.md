@@ -1,6 +1,6 @@
 # Aurora
 
-Project Aurora is a self-learning notification orchestration system for a language-learning app (VoiceUp).  
+Project Aurora is a self-learning notification orchestration system for a language-learning app.  
 It combines deterministic data engineering with constrained LLM generation, then closes the loop with experiment-driven iteration.
 
 ## 1) What This Repo Demonstrates
@@ -80,14 +80,8 @@ From `iteration_1_after_learning/message_templates.csv`:
 | **SEG_09** Low-Active Cold Trial | 1) Start Today's Session - Three minutes is all it takes. Open now and keep your streak alive.<br>2) Ready to beat yesterday? - Your last score was 72. Can you top it in 5 minutes today? | 1) My Streak Was Lost in the Haze of Inactivity - Daily practice with Sia's AI tutor helps you find your rhythm again.<br>2) Unlock Your Streak's Secret - Discover how VoiceUp's AI tutor helps you regain momentum with personalized feedback. | BAD |
 | **SEG_11** Deep Churned | 1) Start Today's Session - Three minutes is all it takes. Open now and keep your streak alive.<br>2) Ready to beat yesterday? - Your last score was 72. Can you top it in 5 minutes today? | 1) Your 7-day streak is at risk! - Three minutes to save it. Open now and keep your streak alive.<br>2) Ready to beat yesterday? - Your last score was 72. Can you top it in 5 minutes today? | GOOD |
 
-## 6) Why This Is Strong for ML/AI + SDE Roles
 
-- **ML thinking:** feature engineering, segmentation logic, behavioral policy optimization, metric-driven iteration.
-- **LLM systems design:** prompt-constrained JSON generation, validation/fallback safeguards, controlled generation slots.
-- **Experimentation mindset:** templates tied to CTR/engagement/uninstall outcomes and evolved with explicit thresholds.
-- **Software engineering quality:** modular codebase, explicit artifacts, rerunnable steps, and transparent pipeline control via CLI.
-
-## 7) How to Run
+## 6) How to Run
 
 ```bash
 python codebase/main.py
